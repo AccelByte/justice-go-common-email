@@ -7,7 +7,7 @@ Go SDK for email sender functionality in AccelByte services.
 ### Install
 
 ```
-go get -u github.com/AccelByte/eventstream-go-sdk
+go get -u github.com/AccelByte/justice-go-common-email
 ```
 
 ### Importing

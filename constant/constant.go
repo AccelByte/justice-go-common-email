@@ -18,13 +18,15 @@ package constant
 
 import "errors"
 
+type ContextKey string
+
 const (
 	CopyrightYearTemplateKey = "CopyrightYear"
 	LanguageTagTemplateKey   = "LanguageTag"
 
 	DefaultHTTPTimeoutInSeconds = 10
 
-	ServiceAccessToken = "ServiceAccessToken"
+	ServiceAccessToken ContextKey = "ServiceAccessToken"
 )
 
 var ErrNotFound = errors.New("not found")

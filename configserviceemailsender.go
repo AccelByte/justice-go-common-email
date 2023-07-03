@@ -29,6 +29,7 @@ import (
 	"github.com/AccelByte/justice-go-common-email/platform"
 	"github.com/AccelByte/justice-go-common-email/platform/sendgrid"
 	"github.com/patrickmn/go-cache"
+	"github.com/sirupsen/logrus"
 )
 
 type ConfigServiceEmailSender struct {
@@ -79,13 +80,16 @@ func (e *ConfigServiceEmailSender) SendEmail(ctx context.Context, emailData obje
 
 	emailSenderConfiguration, err := e.ConfigServiceProxy.GetEmailSenderConfiguration(ctx, emailData.Namespace)
 	if err != nil {
-		return fmt.Errorf("fail get email sender configuration. error: %v", err)
+		logrus.Errorf("fail get email sender configuration. error: %v", err)
+		return err
 	}
 	if emailSenderConfiguration == nil {
-		return fmt.Errorf("email sender configuration for namespace %s is not found", emailData.Namespace)
+		logrus.Errorf("email sender configuration for namespace %s is not found", emailData.Namespace)
+		return ErrConfigurationNotFound
 	}
 	if !emailSenderConfiguration.IsDomainAuthenticated {
-		return fmt.Errorf("email sender domain for namespace %s is not authenticated yet", emailData.Namespace)
+		logrus.Errorf("email sender domain for namespace %s is not authenticated yet", emailData.Namespace)
+		return ErrConfigurationNotValid
 	}
 
 	if emailData.From == "" {
@@ -107,7 +111,8 @@ func (e *ConfigServiceEmailSender) SendEmail(ctx context.Context, emailData obje
 
 	senderPlatform := e.getSenderPlatform(emailSenderConfiguration.APIKey)
 	if senderPlatform == nil {
-		return fmt.Errorf("sender platform for namespace %s is not exist", emailData.Namespace)
+		logrus.Errorf("sender platform for namespace %s is not exist", emailData.Namespace)
+		return ErrSenderPlatformNotExist
 	}
 	return senderPlatform.Send(ctx, emailData)
 }

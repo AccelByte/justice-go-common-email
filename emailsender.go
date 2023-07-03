@@ -18,6 +18,7 @@ package emailsender
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/AccelByte/justice-go-common-email/object"
@@ -28,6 +29,12 @@ type EmailConfigSource string
 const (
 	StaticSource        EmailConfigSource = "static"
 	ConfigServiceSource EmailConfigSource = "configservice"
+)
+
+var (
+	ErrConfigurationNotFound  = errors.New("configuration not found")
+	ErrConfigurationNotValid  = errors.New("configuration is not valid")
+	ErrSenderPlatformNotExist = errors.New("sender platform is not exist")
 )
 
 type EmailSender interface {

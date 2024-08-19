@@ -46,7 +46,8 @@ type EmailData struct {
 	XMCTemplate  string
 	XMCMergeVars map[string]interface{}
 	Categories   []string
-	CarbonCopy   []string
+	// CarbonCopy current this only supported for sendgrid and would need further update for mandrill
+	CarbonCopy []string
 }
 
 func (d *EmailData) SetTemplateAdditionalData() {

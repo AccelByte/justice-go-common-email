@@ -68,6 +68,7 @@ type emailPayload struct {
 
 type personalization struct {
 	To                  []mail                 `json:"to"`
+	CC                  []mail                 `json:"cc"`
 	DynamicTemplateData map[string]interface{} `json:"dynamic_template_data"`
 }
 
@@ -95,6 +96,11 @@ func (e MailSender) Send(ctx context.Context, emailData object.EmailData) error 
 			DynamicTemplateData: emailData.XMCMergeVars,
 		},
 	}
+	CCs := make([]mail, 0)
+	for _, ccEmailData := range emailData.CarbonCopy {
+		CCs = append(CCs, mail{Email: ccEmailData})
+	}
+	personalizations = append(personalizations, personalization{CC: CCs})
 	payload := &emailPayload{
 		Subject:          emailData.Subject,
 		From:             mail{Email: emailData.From, Name: emailData.FromName},

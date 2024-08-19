@@ -46,6 +46,7 @@ type EmailData struct {
 	XMCTemplate  string
 	XMCMergeVars map[string]interface{}
 	Categories   []string
+	CarbonCopy   []string
 }
 
 func (d *EmailData) SetTemplateAdditionalData() {

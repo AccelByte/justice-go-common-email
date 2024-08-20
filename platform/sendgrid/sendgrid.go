@@ -68,7 +68,7 @@ type emailPayload struct {
 
 type personalization struct {
 	To                  []mail                 `json:"to"`
-	CC                  []mail                 `json:"cc"`
+	CC                  []mail                 `json:"cc,omitempty"`
 	DynamicTemplateData map[string]interface{} `json:"dynamic_template_data"`
 }
 
